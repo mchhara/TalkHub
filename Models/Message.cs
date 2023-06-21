@@ -10,7 +10,7 @@ namespace TalkHub.Models
 		[Required]
 		public string Text { get; set; }
 		public DateTime When { get; set; }
-		public int UserId { get; set; }
-		public virtual AppUser AppUser { get; set; }	
+		public string UserId { get; set; }
+		public virtual AppUser Sender { get; set; }	
 	}
 }
