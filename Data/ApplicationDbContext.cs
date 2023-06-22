@@ -19,5 +19,7 @@ namespace TalkHub.Data
 				.WithMany(d => d.Messages)
 				.HasForeignKey(d => d.UserId);
 		}
+
+		public DbSet<Message> Messages { get; set; }	
 	}
 }
