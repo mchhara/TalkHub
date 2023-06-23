@@ -12,7 +12,7 @@ using TalkHub.Data;
 namespace TalkHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230621162918_Init")]
+    [Migration("20230622201921_Init")]
     partial class Init
     {
         /// <inheritdoc />
