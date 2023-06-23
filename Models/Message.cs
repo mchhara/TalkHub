@@ -9,8 +9,8 @@ namespace TalkHub.Models
 		public string UserName { get; set; }
 		[Required]
 		public string Text { get; set; }
-		public DateTime When { get; set; }
-		public string UserId { get; set; }
+		public DateTime When { get; set; } = DateTime.UtcNow;
+        public string UserId { get; set; }
 		public virtual AppUser Sender { get; set; }	
 	}
 }

@@ -1,8 +1,77 @@
-﻿@{
+﻿@model IEnumerable<TalkHub.Models.Message>
+@{
     ViewData["Title"] = "Home Page";
+    var username = User.Identity.Name;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+<div>
+    <h2 class="jumbotron bg-light">
+        <p>Public Talk</p>
+    </h2>
+
+    <div class="row">
+        <div class="col-md-12" id="chat">
+            @if(Model != null)
+            {
+                @foreach (var message in Model.OrderBy(m => m.When))
+                {
+                    string conteinerClass, timePosition, contcolor,offset;
+                    if(username == message.UserName)
+                    {
+                        conteinerClass = "container darker";
+                        contcolor = "bg-primary";
+                        offset = "col-md-6 offset-md-6";
+                    }
+                    else
+                    {
+                        conteinerClass = "container";
+                        contcolor = "bg-light";
+                        offset = "";
+                    }
+
+                    <div class="row">
+                        <div class="@offset">
+                            <div class="@conteinerClass @contcolor">
+
+                                <p>@message.UserName</p>
+                                <p >@message.Text</p>
+                                <span > @message.When.ToString()</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-md-12">
+            <form asp-action="Create"
+                data-ajax-begin="clearInputField" data-ajax-complete=""
+                data-ajax-failure="alert('Fail')" data-ajax-success="sendMessage"
+                data-ajax="true" data-ajax-method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input name="Text" class="form-control" id="messageText" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Send" id="submitButton" class="btn btn-primary"/>
+                    </div>
+                    <input type="hidden" value="@username" name="username" />
+            </form>
+        </div>
+    </div>
 </div>
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
+        const userName = "@ViewBag.CurrentUserName";
+    </script>
+}
+
+@section scripts{
+
+    <script src ="~/signalr/signalr.min.js"></script>
+    <script src ="~/lib/jquery/dist/jquery-unobtrusive-ajax.min.js"></script>
+    <script src="~/js/chat.js"></script>
+    <script src ="~/js/signalrReqHandler.js"></script>
+}

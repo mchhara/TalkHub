@@ -20,16 +20,17 @@ namespace TalkHub.Controllers
 		public async Task <IActionResult> Index()
 		{
 			var currentUser = await _userManager.GetUserAsync(User);
+			if(currentUser != null)
+			{
+                ViewBag.CurrentUserName = currentUser.UserName;
+            }
 
-			ViewBag.CurrentUserName = currentUser.UserName;
-
-			var messages = await _context.Messages.ToListAsync();
+            var messages = await _context.Messages.ToListAsync();
 			return View();
 		}
 
 		public async Task<IActionResult> Create(Message message)
 		{
-			if(ModelState.IsValid)
 			{
 				message.UserName = User.Identity.Name;
 				var sender = await _userManager.GetUserAsync(User);
@@ -38,7 +39,6 @@ namespace TalkHub.Controllers
 				await _context.SaveChangesAsync();
 				return Ok();
 			}
-			return Error();
 		}
 
 		public IActionResult Privacy()
